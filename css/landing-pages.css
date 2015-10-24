@@ -1,0 +1,7 @@
+body {
+	font-family:Times, serif;
+}
+.header-bg-home {
+	background-image: url('../images/fond.jpg');
+	background-color: #ff1100;
+}

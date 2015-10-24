@@ -1,0 +1,23 @@
+name: Hugo
+type: theme
+description: 'A hugo theme.'
+core: 8.x
+base theme: classy
+libraries:
+  - hugo/global-styling
+stylesheets-remove:
+  - core/assets/vendor/normalize-css/normalize.css
+  - core/modules/system/css/system.module.css
+  - core/modules/system/css/system.theme.css
+  - core/modules/views/css/views.module.css
+regions:
+  content: Content
+  sidebar: Sidebar
+  footer: Footer
+  header: Header
+  menu_site: Menu site
+  recherche: Recherche
+  accueil_1: Accueil Bloc Un
+  accueil_2: Accueil Bloc Deux
+  accueil_3: Accueil Bloc Trois
+  accueil_4: Accueil Bloc Quatre

@@ -1,0 +1,159 @@
+{#
+/**
+ * @file
+ * Theme override for a field.
+ *
+ * To override output, copy the "field.html.twig" from the templates directory
+ * to your theme's directory and customize it, just like customizing other
+ * Drupal templates such as page.html.twig or node.html.twig.
+ *
+ * Instead of overriding the theming for all fields, you can also just override
+ * theming for a subset of fields using
+ * @link themeable Theme hook suggestions. @endlink For example,
+ * here are some theme hook suggestions that can be used for a field_foo field
+ * on an article node type:
+ * - field--node--field-foo--article.html.twig
+ * - field--node--field-foo.html.twig
+ * - field--node--article.html.twig
+ * - field--field-foo.html.twig
+ * - field--text-with-summary.html.twig
+ * - field.html.twig
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - label_hidden: Whether to show the field label or not.
+ * - title_attributes: HTML attributes for the title.
+ * - label: The label for the field.
+ * - multiple: TRUE if a field can contain multiple items.
+ * - items: List of all the field items. Each item contains:
+ *   - attributes: List of HTML attributes for each item.
+ *   - content: The field item's content.
+ * - entity_type: The entity type to which the field belongs.
+ * - field_name: The name of the field.
+ * - field_type: The type of the field.
+ * - label_display: The display settings for the label.
+ *
+ *
+ * @see template_preprocess_field()
+ */
+#}
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
+%}
+
+    {% if multiple %}
+
+        {% if items|length <= 1 %}
+
+          {% for item in items %}
+            <div{{ item.attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
+          {% endfor %}
+
+        {% else %}
+
+              {{ attach_library('hugo/caroussel') }}
+
+              <div id="caroussel-hugo" class="carousel slide" data-ride="carousel">
+
+              <!-- Carousel indicators -->
+
+              <ol class="carousel-indicators">
+
+                      {% for item in items %}
+                          
+                          {% if loop.first %}
+                            <li data-target="#caroussel-hugo" data-slide-to="0" class="active"></li>
+                          {% else %}
+                            <li data-target="#caroussel-hugo" data-slide-to={{ loop.index0 }}></li>
+                          {% endif %}
+
+                      {% endfor %}
+
+              </ol>
+              
+              {% if label_hidden %}
+                    
+                      <div{{ attributes.addClass(classes, 'field__items carousel-inner carousel-hugo') }}>
+                        
+                        {% for item in items %}
+                          
+                          {% if loop.first %}
+                            <div{{ item.attributes.addClass(classes, 'field__item item active') }}>
+                          {% else %}
+                            <div{{ item.attributes.addClass(classes, 'field__item item') }}>
+                          {% endif %}
+
+                            {{ item.content }}
+                            
+                              <div class="carousel-caption">
+                                  <h3>{{ item.content['#item'].alt }}</h3>
+                              </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                      </div>
+                    
+
+              {% else %}
+                
+                <div{{ attributes.addClass(classes) }}>
+                  <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+                        
+                      <div{{ attributes.addClass(classes, 'field__items caroussel-inner carousel-hugo') }}>
+                        
+                        {% for item in items %}
+                          
+                          {% if loop.first %}
+                            <div{{ item.attributes.addClass(classes, 'field__item item active') }}>
+                          {% endif %}
+                              
+                            <div{{ item.attributes.addClass(classes, 'field__item item') }}>
+
+                            {{ item.content }}
+                            
+                              <div class="carousel-caption">
+                                  <h3>{{ item.content['#item'].alt }}</h3>
+                              </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                      </div>
+                </div>
+
+              {% endif %}
+
+              <a class="carousel-control left" href="#caroussel-hugo" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+
+              <a class="carousel-control right" href="#caroussel-hugo" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+        
+        {% endif %}
+
+    {% else %}
+                          
+              {% for item in items %}
+                <div{{ item.attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
+              {% endfor %}
+
+    {% endif %}
+
+
+</div>

@@ -1,0 +1,23 @@
+global-styling:
+  version: VERSION
+  css:
+    theme:
+      css/main.css: {}
+      css/toolbar-fixes.css: {}
+  js:
+    js/bootstrap.min.js: {}
+    js/script.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+
+landing-pages:
+  version: VERSION
+  css:
+    theme:
+      css/landing-pages.css: {}
+
+caroussel:
+  version: VERSION
+  js:
+    js/caroussel.js: {}
